@@ -26,7 +26,15 @@ class Dessin{
             // on récupère les coordonnées avec e.clientX et on les soustrait aux coordonnées de départ - si on fait pas de responsive on pourrait s'arreter la mais comme on veut gaire du responsive il faut calculer par rapport aux dimensions données à l origine (ici 400) que l on divise par les dimensions réellement affichées à l'écran actuellement (en fonction de la taille de l'écran)
             this.prevY = (e.clientY - this.canvas.offsetTop) * 400 / this.canvas.clientHeight;
         })
-
+        this.canvas.addEventListener("touchstart", (e) => {
+            // je dessinne
+            this.draw = true;
+           
+            // je stocke les coordonnées de départ
+            this.prevX = (e.clientX - this.canvas.offsetLeft) * 400 / this.canvas.clientWidth;
+            // on récupère les coordonnées avec e.clientX et on les soustrait aux coordonnées de départ - si on fait pas de responsive on pourrait s'arreter la mais comme on veut gaire du responsive il faut calculer par rapport aux dimensions données à l origine (ici 400) que l on divise par les dimensions réellement affichées à l'écran actuellement (en fonction de la taille de l'écran)
+            this.prevY = (e.clientY - this.canvas.offsetTop) * 400 / this.canvas.clientHeight;
+        })
         this.canvas.addEventListener("mousemove", (e) => {
             if(this.draw){
                 // on calcule les coordonées
@@ -43,8 +51,27 @@ class Dessin{
                 this.prevY = currY;
             }
         })
+        this.canvas.addEventListener("touchmove", (e) => {
+            if(this.draw){
+                // on calcule les coordonées
+                // on verifie si on dessine donc on recupere les emplacements ou est la souris quand elle se deplace
+                let currX = (e.clientX - this.canvas.offsetLeft) * 400 / this.canvas.clientWidth;
+                let currY = (e.clientY - this.canvas.offsetTop) * 400 / this.canvas.clientHeight;
+                // maintenant on va envoyer les coordonnées pour dessiner
+
+                // on dessine
+                this.dessine(this.prevX, this.prevY, currX, currY);
+                
+                // on stocke les nouvelles coordonées
+                this.prevX = currX;
+                this.prevY = currY;
+            }
+        })
         // maintenant on met une nouvelle ecoute  tu arretes de dessiner quand on lache la souris
         this.canvas.addEventListener("mouseup", () => {
+            this.draw = false;
+        })
+        this.canvas.addEventListener("touchend", () => {
             this.draw = false;
         })
         // et quand on sort de la feuille

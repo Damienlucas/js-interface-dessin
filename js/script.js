@@ -52,3 +52,6 @@ window.onload = () => {
 
    
 }
+document.getElementsByTagName("body")[0].style.cursor = "url('http://wiki-devel.sugarlabs.org/images/e/e2/Arrow.cur'), auto";
+
+
